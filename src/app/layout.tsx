@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AppProvider } from "@/context/AppContext";
 
 export const metadata: Metadata = {
-  title: "Cafe Campaign",
-  description: "A Next.js application for cafe campaign",
+  title: "MOC Coffee - Loyalty Rewards",
+  description: "Earn points with every purchase at MOC Coffee",
 };
 
 export default function RootLayout({
@@ -13,8 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
-        {children}
+      <body className="antialiased bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+        <AppProvider>
+          {children}
+        </AppProvider>
       </body>
     </html>
   );

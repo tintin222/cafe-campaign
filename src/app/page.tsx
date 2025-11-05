@@ -1,31 +1,28 @@
+'use client';
+
+import { useApp } from '@/context/AppContext';
+import LandingPage from '@/components/LandingPage';
+import CustomerView from '@/components/CustomerView';
+import StaffView from '@/components/StaffView';
+import AdminView from '@/components/AdminView';
+import Navigation from '@/components/Navigation';
+
 export default function Home() {
+  const { currentCustomer, viewMode } = useApp();
+
+  // Show landing page if no customer is logged in and we're in customer mode
+  if (!currentCustomer && viewMode === 'customer') {
+    return <LandingPage />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <main className="text-center">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Welcome to Cafe Campaign
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Your Next.js and Node.js base is ready!
-        </p>
-        <div className="flex gap-4 justify-center">
-          <a
-            href="https://nextjs.org/docs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            Read Docs
-          </a>
-          <a
-            href="https://nextjs.org/learn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 bg-white text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            Learn Next.js
-          </a>
-        </div>
+    <div className="min-h-screen pb-20">
+      <Navigation />
+
+      <main className="container mx-auto px-4 py-6">
+        {viewMode === 'customer' && <CustomerView />}
+        {viewMode === 'staff' && <StaffView />}
+        {viewMode === 'admin' && <AdminView />}
       </main>
     </div>
   );
