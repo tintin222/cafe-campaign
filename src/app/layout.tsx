@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-starbucks-cream min-h-screen">
+      <body className="antialiased bg-starbucks-cream min-h-screen font-sans">
         <AppProvider>
           {children}
         </AppProvider>

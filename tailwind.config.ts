@@ -21,6 +21,11 @@ const config: Config = {
           'tan': '#D4C5B0',
         },
       },
+      fontFamily: {
+        'sans': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        'heading': ['Georgia', 'Times New Roman', 'serif'],
+        'body': ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
     },
   },
   plugins: [],
