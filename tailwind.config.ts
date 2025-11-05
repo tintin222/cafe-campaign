@@ -11,6 +11,15 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        // Starbucks-inspired colors
+        'starbucks': {
+          'green': '#00704A',
+          'light-green': '#008248',
+          'dark-green': '#005A3C',
+          'gold': '#CBA258',
+          'cream': '#F2F0EB',
+          'tan': '#D4C5B0',
+        },
       },
     },
   },

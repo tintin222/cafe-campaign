@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Customer } from '@/types';
-import { Coffee, Gift, Star, CreditCard, Users } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 export default function LandingPage() {
   const { addCustomer, setCurrentCustomer, customers } = useApp();
@@ -33,18 +33,20 @@ export default function LandingPage() {
 
   if (showSignUp) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <div className="text-6xl mb-4">☕</div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Join MOC Coffee</h1>
-            <p className="text-gray-600">Start earning rewards today</p>
+            <div className="w-20 h-20 bg-starbucks-green rounded-full flex items-center justify-center mx-auto mb-6">
+              <Star className="w-10 h-10 text-starbucks-gold fill-starbucks-gold" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Join MOC Rewards</h1>
+            <p className="text-gray-600">Start earning stars with every purchase</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <form onSubmit={handleSignUp} className="space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <form onSubmit={handleSignUp} className="space-y-5">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
                   Full Name
                 </label>
                 <input
@@ -53,14 +55,14 @@ export default function LandingPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="John Doe"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-starbucks-green focus:border-transparent text-gray-900"
+                  placeholder="Enter your name"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
+                  Email Address
                 </label>
                 <input
                   type="email"
@@ -68,13 +70,13 @@ export default function LandingPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="john@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-starbucks-green focus:border-transparent text-gray-900"
+                  placeholder="Enter your email"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 mb-2">
                   Phone Number
                 </label>
                 <input
@@ -83,24 +85,24 @@ export default function LandingPage() {
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-starbucks-green focus:border-transparent text-gray-900"
                   placeholder="(555) 123-4567"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold py-4 rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all shadow-lg"
+                className="w-full bg-starbucks-green text-white font-bold py-4 rounded-full hover:bg-starbucks-light-green transition-colors shadow-md"
               >
-                Join Now
+                Create Account
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowSignUp(false)}
-                className="w-full text-gray-600 hover:text-gray-800 font-medium"
+                className="w-full text-starbucks-green hover:text-starbucks-dark-green font-semibold"
               >
-                Back
+                Back to Home
               </button>
             </form>
           </div>
@@ -110,45 +112,46 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="text-center pt-12 pb-8 px-4">
-        <div className="text-8xl mb-6 animate-bounce">☕</div>
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-          MOC Coffee
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-600 mb-8">
-          Where every sip earns you more
-        </p>
-        <button
-          onClick={() => setShowSignUp(true)}
-          className="bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold py-4 px-12 rounded-full text-lg hover:from-amber-700 hover:to-orange-700 transition-all shadow-xl hover:shadow-2xl transform hover:scale-105"
-        >
-          Join Loyalty Program
-        </button>
+      <div className="bg-starbucks-green text-white">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
+            <Star className="w-12 h-12 text-starbucks-gold fill-starbucks-gold" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            MOC Rewards
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 text-green-50">
+            Earn stars with every purchase
+          </p>
+          <button
+            onClick={() => setShowSignUp(true)}
+            className="bg-white text-starbucks-green font-bold py-4 px-10 rounded-full text-lg hover:bg-gray-50 transition-all shadow-lg"
+          >
+            Join Now
+          </button>
+        </div>
       </div>
 
-      {/* Demo Mode - Quick Login */}
+      {/* Demo Mode Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <Users className="w-6 h-6 text-blue-600" />
-              <h3 className="text-xl font-bold text-blue-900">Demo Mode - Try It Now!</h3>
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border border-green-100">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Try Demo Mode</h3>
+              <p className="text-gray-600">Select a sample account to explore the app</p>
             </div>
-            <p className="text-center text-blue-700 mb-6">
-              Click on any sample customer below to instantly explore the app
-            </p>
 
             <div className="grid md:grid-cols-3 gap-4">
               {customers.map((customer) => (
                 <button
                   key={customer.id}
                   onClick={() => setCurrentCustomer(customer)}
-                  className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all hover:scale-105 text-left border-2 border-transparent hover:border-blue-400"
+                  className="bg-white rounded-2xl p-5 shadow-sm hover:shadow-lg transition-all border border-gray-200 hover:border-starbucks-green text-left group"
                 >
-                  <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-14 h-14 bg-starbucks-green rounded-full flex items-center justify-center text-white font-bold text-xl group-hover:bg-starbucks-light-green transition-colors">
                       {customer.name.charAt(0)}
                     </div>
                     <div className="flex-1">
@@ -156,76 +159,79 @@ export default function LandingPage() {
                       <div className="text-xs text-gray-500">{customer.email}</div>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-2 text-center">
-                    <div className="text-2xl font-bold text-amber-600">{customer.points}</div>
-                    <div className="text-xs text-gray-600">points</div>
+                  <div className="flex items-center justify-between bg-starbucks-cream rounded-xl p-3">
+                    <div className="flex items-center space-x-2">
+                      <Star className="w-5 h-5 text-starbucks-gold fill-starbucks-gold" />
+                      <span className="text-2xl font-bold text-starbucks-green">{customer.points}</span>
+                    </div>
+                    <span className="text-sm text-gray-600">Stars</span>
                   </div>
                 </button>
               ))}
             </div>
-
-            <p className="text-center text-sm text-blue-600 mt-4">
-              💡 You can also sign up as a new customer or switch to Staff/Admin views
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Features */}
+      {/* Features Grid */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CreditCard className="w-8 h-8 text-amber-600" />
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="text-center">
+            <div className="w-20 h-20 bg-starbucks-green rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl font-bold text-white">1</span>
             </div>
-            <h3 className="font-bold text-lg mb-2">Digital Card</h3>
-            <p className="text-gray-600 text-sm">Get your loyalty card instantly on your phone</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Join Rewards</h3>
+            <p className="text-gray-600">Create your account and get a digital membership card</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Star className="w-8 h-8 text-orange-600" />
+          <div className="text-center">
+            <div className="w-20 h-20 bg-starbucks-green rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl font-bold text-white">2</span>
             </div>
-            <h3 className="font-bold text-lg mb-2">Earn Points</h3>
-            <p className="text-gray-600 text-sm">Get 10 points for every dollar spent</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Earn Stars</h3>
+            <p className="text-gray-600">Collect 10 stars for every dollar you spend</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Gift className="w-8 h-8 text-yellow-600" />
+          <div className="text-center">
+            <div className="w-20 h-20 bg-starbucks-green rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl font-bold text-white">3</span>
             </div>
-            <h3 className="font-bold text-lg mb-2">Amazing Rewards</h3>
-            <p className="text-gray-600 text-sm">Redeem points for free drinks and food</p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Coffee className="w-8 h-8 text-amber-600" />
-            </div>
-            <h3 className="font-bold text-lg mb-2">Easy to Use</h3>
-            <p className="text-gray-600 text-sm">Just scan your QR code at checkout</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Get Rewards</h3>
+            <p className="text-gray-600">Redeem stars for free drinks, food, and more</p>
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-600 py-16">
+      {/* Rewards Preview */}
+      <div className="bg-starbucks-cream py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 text-center text-white">
-            <div>
-              <div className="text-4xl font-bold mb-2">10</div>
-              <div className="text-amber-100">Points per $1</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">8+</div>
-              <div className="text-amber-100">Rewards Available</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">1000+</div>
-              <div className="text-amber-100">Happy Customers</div>
-            </div>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">Delicious Rewards</h2>
+          <p className="text-center text-gray-600 mb-12">Choose from a variety of rewards</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {['☕', '🥐', '🍵', '🥪'].map((emoji, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 text-center shadow-sm">
+                <div className="text-5xl mb-3">{emoji}</div>
+                <div className="flex items-center justify-center space-x-1">
+                  <Star className="w-4 h-4 text-starbucks-gold fill-starbucks-gold" />
+                  <span className="font-bold text-starbucks-green">{(i + 1) * 50}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="container mx-auto px-4 py-16 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start Earning?</h2>
+        <p className="text-gray-600 mb-8 text-lg">Join thousands of happy MOC Coffee members</p>
+        <button
+          onClick={() => setShowSignUp(true)}
+          className="bg-starbucks-green text-white font-bold py-4 px-10 rounded-full text-lg hover:bg-starbucks-light-green transition-colors shadow-lg"
+        >
+          Sign Up Now
+        </button>
       </div>
     </div>
   );

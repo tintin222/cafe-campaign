@@ -28,14 +28,14 @@ export default function TransactionHistory({ customerId }: TransactionHistoryPro
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="bg-white rounded-2xl p-6 shadow-lg">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Transaction History</h2>
-        <p className="text-gray-600">All your points activity in one place</p>
+      <div className="bg-white rounded-3xl p-6 shadow-sm">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">History</h2>
+        <p className="text-gray-600">All your stars activity in one place</p>
       </div>
 
       {/* Transactions List */}
       {customerTransactions.length > 0 ? (
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
           {customerTransactions.map((transaction, index) => (
             <div
               key={transaction.id}

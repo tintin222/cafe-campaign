@@ -5,7 +5,7 @@ import { useApp } from '@/context/AppContext';
 import LoyaltyCard from './LoyaltyCard';
 import RewardsCatalog from './RewardsCatalog';
 import TransactionHistory from './TransactionHistory';
-import { CreditCard, Gift, History } from 'lucide-react';
+import { Star, Gift, History } from 'lucide-react';
 
 type Tab = 'card' | 'rewards' | 'history';
 
@@ -24,41 +24,41 @@ export default function CustomerView() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Tabs */}
-      <div className="flex space-x-2 mb-6 bg-white rounded-lg p-1 shadow-sm">
+      <div className="flex space-x-2 mb-6 bg-white rounded-full p-1.5 shadow-sm">
         <button
           onClick={() => setActiveTab('card')}
-          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all ${
+          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-full transition-all ${
             activeTab === 'card'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'text-gray-600 hover:bg-gray-50'
+              ? 'bg-starbucks-green text-white shadow-md'
+              : 'text-gray-600 hover:bg-starbucks-cream'
           }`}
         >
-          <CreditCard className="w-5 h-5" />
-          <span className="font-medium">My Card</span>
+          <Star className="w-5 h-5" />
+          <span className="font-semibold">My Card</span>
         </button>
 
         <button
           onClick={() => setActiveTab('rewards')}
-          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all ${
+          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-full transition-all ${
             activeTab === 'rewards'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'text-gray-600 hover:bg-gray-50'
+              ? 'bg-starbucks-green text-white shadow-md'
+              : 'text-gray-600 hover:bg-starbucks-cream'
           }`}
         >
           <Gift className="w-5 h-5" />
-          <span className="font-medium">Rewards</span>
+          <span className="font-semibold">Rewards</span>
         </button>
 
         <button
           onClick={() => setActiveTab('history')}
-          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-md transition-all ${
+          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-full transition-all ${
             activeTab === 'history'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'text-gray-600 hover:bg-gray-50'
+              ? 'bg-starbucks-green text-white shadow-md'
+              : 'text-gray-600 hover:bg-starbucks-cream'
           }`}
         >
           <History className="w-5 h-5" />
-          <span className="font-medium">History</span>
+          <span className="font-semibold">History</span>
         </button>
       </div>
 
