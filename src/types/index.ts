@@ -18,6 +18,16 @@ export interface Reward {
   category: 'drink' | 'food' | 'merchandise' | 'discount';
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: 'hot-drinks' | 'cold-drinks' | 'food' | 'merchandise';
+  image: string;
+  popular: boolean;
+}
+
 export interface Transaction {
   id: string;
   customerId: string;
@@ -26,6 +36,7 @@ export interface Transaction {
   description: string;
   date: string;
   rewardId?: string;
+  productIds?: string[];
 }
 
 export interface CafeSettings {

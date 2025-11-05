@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { Customer, Transaction, Reward, ViewMode } from '@/types';
-import { mockCustomers, mockTransactions, mockRewards } from '@/data/mockData';
+import { Customer, Transaction, Reward, ViewMode, Product } from '@/types';
+import { mockCustomers, mockTransactions, mockRewards, mockProducts } from '@/data/mockData';
 
 interface AppContextType {
   currentCustomer: Customer | null;
@@ -12,6 +12,7 @@ interface AppContextType {
   transactions: Transaction[];
   addTransaction: (transaction: Transaction) => void;
   rewards: Reward[];
+  products: Product[];
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
   awardPoints: (customerId: string, points: number, description: string) => void;
@@ -25,6 +26,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
   const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
   const [rewards] = useState<Reward[]>(mockRewards);
+  const [products] = useState<Product[]>(mockProducts);
   const [viewMode, setViewMode] = useState<ViewMode>('customer');
 
   const addCustomer = (customer: Customer) => {
@@ -100,6 +102,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         transactions,
         addTransaction,
         rewards,
+        products,
         viewMode,
         setViewMode,
         awardPoints,

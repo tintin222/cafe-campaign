@@ -3,6 +3,7 @@
 import { Customer } from '@/types';
 import { QRCodeSVG } from 'qrcode.react';
 import { Star } from 'lucide-react';
+import ProductRecommendations from './ProductRecommendations';
 
 interface LoyaltyCardProps {
   customer: Customer;
@@ -17,6 +18,8 @@ export default function LoyaltyCard({ customer }: LoyaltyCardProps) {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
+      {/* Product Recommendations */}
+      <ProductRecommendations customerId={customer.id} />
       {/* Rewards Progress Card */}
       <div className="bg-white rounded-3xl p-8 shadow-lg">
         <div className="text-center mb-8">
