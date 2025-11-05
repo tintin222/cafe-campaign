@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Customer } from '@/types';
-import { Coffee, Gift, Star, CreditCard } from 'lucide-react';
+import { Coffee, Gift, Star, CreditCard, Users } from 'lucide-react';
 
 export default function LandingPage() {
-  const { addCustomer, setCurrentCustomer } = useApp();
+  const { addCustomer, setCurrentCustomer, customers } = useApp();
   const [showSignUp, setShowSignUp] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -126,6 +126,49 @@ export default function LandingPage() {
         >
           Join Loyalty Program
         </button>
+      </div>
+
+      {/* Demo Mode - Quick Login */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <Users className="w-6 h-6 text-blue-600" />
+              <h3 className="text-xl font-bold text-blue-900">Demo Mode - Try It Now!</h3>
+            </div>
+            <p className="text-center text-blue-700 mb-6">
+              Click on any sample customer below to instantly explore the app
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {customers.map((customer) => (
+                <button
+                  key={customer.id}
+                  onClick={() => setCurrentCustomer(customer)}
+                  className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all hover:scale-105 text-left border-2 border-transparent hover:border-blue-400"
+                >
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                      {customer.name.charAt(0)}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-gray-900">{customer.name}</div>
+                      <div className="text-xs text-gray-500">{customer.email}</div>
+                    </div>
+                  </div>
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-2 text-center">
+                    <div className="text-2xl font-bold text-amber-600">{customer.points}</div>
+                    <div className="text-xs text-gray-600">points</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <p className="text-center text-sm text-blue-600 mt-4">
+              💡 You can also sign up as a new customer or switch to Staff/Admin views
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Features */}
