@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { Customer, Transaction, Reward, ViewMode, Product, CustomerSegment, Campaign } from '@/types';
+import { Customer, Transaction, Reward, ViewMode, Product, CustomerSegment, Campaign, CustomerPreferences } from '@/types';
 import { mockCustomers, mockTransactions, mockRewards, mockProducts, mockSegments, mockCampaigns } from '@/data/mockData';
 
 interface AppContextType {
@@ -9,6 +9,7 @@ interface AppContextType {
   setCurrentCustomer: (customer: Customer | null) => void;
   customers: Customer[];
   addCustomer: (customer: Customer) => void;
+  updateCustomerPreferences: (customerId: string, preferences: CustomerPreferences) => void;
   transactions: Transaction[];
   addTransaction: (transaction: Transaction) => void;
   rewards: Reward[];
@@ -37,6 +38,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addCustomer = (customer: Customer) => {
     setCustomers((prev) => [...prev, customer]);
+  };
+
+  const updateCustomerPreferences = (customerId: string, preferences: CustomerPreferences) => {
+    setCustomers((prev) =>
+      prev.map((c) =>
+        c.id === customerId ? { ...c, preferences } : c
+      )
+    );
+
+    // Update current customer if it's them
+    if (currentCustomer?.id === customerId) {
+      setCurrentCustomer((prev) =>
+        prev ? { ...prev, preferences } : null
+      );
+    }
   };
 
   const addTransaction = (transaction: Transaction) => {
@@ -157,6 +173,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
             if (criterion.operator === 'less_than') return avgOrder < Number(criterion.value);
             return false;
 
+          case 'preference':
+            if (!customer.preferences || !criterion.preferenceField) return false;
+            const prefValue = customer.preferences[criterion.preferenceField as keyof CustomerPreferences];
+
+            if (criterion.operator === 'includes_any') {
+              // Check if customer preference array includes any of the values
+              if (Array.isArray(prefValue) && Array.isArray(criterion.value)) {
+                const prefArray = prefValue as string[];
+                const criteriaArray = criterion.value as string[];
+                return criteriaArray.some((v: string) => prefArray.includes(v));
+              }
+              return false;
+            }
+
+            if (criterion.operator === 'includes_all') {
+              // Check if customer preference array includes all of the values
+              if (Array.isArray(prefValue) && Array.isArray(criterion.value)) {
+                const prefArray = prefValue as string[];
+                const criteriaArray = criterion.value as string[];
+                return criteriaArray.every((v: string) => prefArray.includes(v));
+              }
+              return false;
+            }
+
+            if (criterion.operator === 'equals') {
+              return prefValue === criterion.value;
+            }
+
+            if (criterion.operator === 'contains') {
+              if (Array.isArray(prefValue)) {
+                const prefArray = prefValue as string[];
+                return prefArray.includes(String(criterion.value));
+              }
+              return false;
+            }
+
+            return false;
+
           default:
             return false;
         }
@@ -183,6 +237,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setCurrentCustomer,
         customers,
         addCustomer,
+        updateCustomerPreferences,
         transactions,
         addTransaction,
         rewards,

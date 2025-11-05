@@ -1,3 +1,48 @@
+export interface CustomerPreferences {
+  // Beverage Preferences
+  favoriteDrinkTypes?: ('hot-coffee' | 'iced-coffee' | 'hot-tea' | 'iced-tea' | 'specialty' | 'frappuccino')[];
+  caffeinePreference?: 'regular' | 'decaf' | 'half-caf' | 'no-preference';
+  milkPreferences?: ('whole' | 'skim' | 'oat' | 'almond' | 'soy' | 'coconut' | 'no-milk')[];
+  sweetnessLevel?: 'unsweetened' | 'lightly-sweet' | 'regular' | 'extra-sweet';
+
+  // Dietary Restrictions
+  dietaryRestrictions?: ('vegan' | 'vegetarian' | 'gluten-free' | 'dairy-free' | 'nut-allergy' | 'sugar-free')[];
+
+  // Favorite Flavors
+  favoriteFlavors?: ('vanilla' | 'caramel' | 'hazelnut' | 'mocha' | 'pumpkin-spice' | 'cinnamon' | 'mint' | 'chocolate')[];
+
+  // Size Preference
+  preferredSize?: 'small' | 'medium' | 'large' | 'extra-large';
+
+  // Visit Patterns (self-reported)
+  preferredVisitTimes?: ('early-morning' | 'morning' | 'midday' | 'afternoon' | 'evening')[];
+  visitFrequency?: 'daily' | 'few-times-week' | 'weekly' | 'occasionally';
+  visitPurpose?: ('work-study' | 'social' | 'quick-grab' | 'relaxation')[];
+
+  // Food Preferences
+  favoriteFoodCategories?: ('pastries' | 'sandwiches' | 'salads' | 'snacks' | 'breakfast')[];
+  tastePreference?: 'sweet' | 'savory' | 'both';
+
+  // Interests
+  interests?: ('new-products' | 'seasonal-specials' | 'limited-offers' | 'events' | 'sustainability')[];
+
+  // Environmental
+  bringOwnCup?: boolean;
+  preferSustainablePackaging?: boolean;
+
+  // Communication Preferences
+  communicationPreferences?: {
+    email?: boolean;
+    sms?: boolean;
+    push?: boolean;
+    frequency?: 'daily' | 'weekly' | 'monthly' | 'special-only';
+  };
+
+  // Completion tracking
+  profileCompleteness?: number; // 0-100
+  lastUpdated?: string;
+}
+
 export interface Customer {
   id: string;
   name: string;
@@ -6,6 +51,7 @@ export interface Customer {
   points: number;
   joinedDate: string;
   qrCode: string;
+  preferences?: CustomerPreferences;
 }
 
 export interface Reward {
@@ -50,10 +96,11 @@ export interface CafeSettings {
 }
 
 export interface SegmentCriteria {
-  type: 'points' | 'purchases' | 'category' | 'join_date' | 'avg_order';
-  operator: 'greater_than' | 'less_than' | 'equals' | 'contains';
-  value: number | string;
+  type: 'points' | 'purchases' | 'category' | 'join_date' | 'avg_order' | 'preference';
+  operator: 'greater_than' | 'less_than' | 'equals' | 'contains' | 'includes_any' | 'includes_all';
+  value: number | string | string[] | boolean;
   label: string;
+  preferenceField?: string; // For preference-based criteria (e.g., 'favoriteDrinkTypes', 'dietaryRestrictions')
 }
 
 export interface CustomerSegment {

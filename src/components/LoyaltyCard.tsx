@@ -1,24 +1,84 @@
 'use client';
 
-import { Customer } from '@/types';
+import { useState } from 'react';
+import { Customer, CustomerPreferences } from '@/types';
 import { QRCodeSVG } from 'qrcode.react';
-import { Star } from 'lucide-react';
+import { Star, Settings } from 'lucide-react';
+import { useApp } from '@/context/AppContext';
 import ProductRecommendations from './ProductRecommendations';
 import CustomerCampaigns from './CustomerCampaigns';
+import PreferencesForm from './PreferencesForm';
 
 interface LoyaltyCardProps {
   customer: Customer;
 }
 
 export default function LoyaltyCard({ customer }: LoyaltyCardProps) {
+  const { updateCustomerPreferences } = useApp();
+  const [showPreferencesForm, setShowPreferencesForm] = useState(false);
+
   const nextRewardAt = 100;
   const currentProgress = customer.points % nextRewardAt;
   const progressPercentage = (currentProgress / nextRewardAt) * 100;
   const starsEarned = Math.floor(customer.points / 10);
   const totalRewards = Math.floor(customer.points / nextRewardAt);
 
+  const handleSavePreferences = (preferences: CustomerPreferences) => {
+    updateCustomerPreferences(customer.id, preferences);
+    setShowPreferencesForm(false);
+  };
+
+  const profileCompleteness = customer.preferences?.profileCompleteness || 0;
+
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
+      {/* Preferences Banner - Show if profile is incomplete */}
+      {profileCompleteness < 80 && (
+        <div className="bg-gradient-to-r from-starbucks-gold to-amber-500 rounded-2xl p-6 text-white shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h3 className="font-bold text-lg mb-1">Personalize Your Experience</h3>
+              <p className="text-sm opacity-90 mb-3">
+                Tell us your preferences to get personalized recommendations and exclusive offers!
+              </p>
+              <div className="bg-white/20 rounded-full h-2 mb-2">
+                <div
+                  className="bg-white h-2 rounded-full transition-all"
+                  style={{ width: `${profileCompleteness}%` }}
+                />
+              </div>
+              <p className="text-xs opacity-80">{profileCompleteness}% Complete</p>
+            </div>
+            <button
+              onClick={() => setShowPreferencesForm(true)}
+              className="ml-4 bg-white text-starbucks-green px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all flex items-center gap-2"
+            >
+              <Settings className="w-5 h-5" />
+              Set Preferences
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Preferences Button for complete profiles */}
+      {profileCompleteness >= 80 && (
+        <button
+          onClick={() => setShowPreferencesForm(true)}
+          className="w-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all flex items-center justify-between border-2 border-gray-100 hover:border-starbucks-green"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-starbucks-cream flex items-center justify-center">
+              <Settings className="w-6 h-6 text-starbucks-green" />
+            </div>
+            <div className="text-left">
+              <div className="font-bold text-gray-900">My Preferences</div>
+              <div className="text-sm text-gray-600">{profileCompleteness}% Complete</div>
+            </div>
+          </div>
+          <div className="text-starbucks-green font-bold">Edit</div>
+        </button>
+      )}
+
       {/* Special Campaigns */}
       <CustomerCampaigns customerId={customer.id} />
 
@@ -167,6 +227,15 @@ export default function LoyaltyCard({ customer }: LoyaltyCardProps) {
           </li>
         </ul>
       </div>
+
+      {/* Preferences Form Modal */}
+      {showPreferencesForm && (
+        <PreferencesForm
+          initialPreferences={customer.preferences}
+          onSave={handleSavePreferences}
+          onClose={() => setShowPreferencesForm(false)}
+        />
+      )}
     </div>
   );
 }
