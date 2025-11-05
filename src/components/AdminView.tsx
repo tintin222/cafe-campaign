@@ -3,6 +3,8 @@
 import { useApp } from '@/context/AppContext';
 import { Settings, Users, Award, TrendingUp, Star } from 'lucide-react';
 import { cafeSettings } from '@/data/mockData';
+import CustomerSegments from './CustomerSegments';
+import Campaigns from './Campaigns';
 
 export default function AdminView() {
   const { rewards, customers, transactions } = useApp();
@@ -64,6 +66,12 @@ export default function AdminView() {
           <div className="text-sm opacity-90">Active Rewards</div>
         </div>
       </div>
+
+      {/* Customer Segments */}
+      <CustomerSegments />
+
+      {/* Marketing Campaigns */}
+      <Campaigns />
 
       {/* Cafe Settings */}
       <div className="bg-white rounded-2xl p-6 shadow-lg">

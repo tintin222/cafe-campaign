@@ -49,4 +49,39 @@ export interface CafeSettings {
   email: string;
 }
 
+export interface SegmentCriteria {
+  type: 'points' | 'purchases' | 'category' | 'join_date' | 'avg_order';
+  operator: 'greater_than' | 'less_than' | 'equals' | 'contains';
+  value: number | string;
+  label: string;
+}
+
+export interface CustomerSegment {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  icon: string;
+  criteria: SegmentCriteria[];
+  customerCount?: number;
+  createdDate: string;
+  active: boolean;
+}
+
+export interface Campaign {
+  id: string;
+  name: string;
+  description: string;
+  segmentId: string;
+  offerType: 'discount' | 'bonus_stars' | 'free_item' | 'bogo';
+  offerValue: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'scheduled' | 'ended';
+  image: string;
+  views: number;
+  redemptions: number;
+  termsAndConditions?: string;
+}
+
 export type ViewMode = 'customer' | 'staff' | 'admin';

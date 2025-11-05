@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { Customer, Transaction, Reward, ViewMode, Product } from '@/types';
-import { mockCustomers, mockTransactions, mockRewards, mockProducts } from '@/data/mockData';
+import { Customer, Transaction, Reward, ViewMode, Product, CustomerSegment, Campaign } from '@/types';
+import { mockCustomers, mockTransactions, mockRewards, mockProducts, mockSegments, mockCampaigns } from '@/data/mockData';
 
 interface AppContextType {
   currentCustomer: Customer | null;
@@ -13,10 +13,14 @@ interface AppContextType {
   addTransaction: (transaction: Transaction) => void;
   rewards: Reward[];
   products: Product[];
+  segments: CustomerSegment[];
+  campaigns: Campaign[];
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
   awardPoints: (customerId: string, points: number, description: string) => void;
   redeemReward: (customerId: string, reward: Reward) => void;
+  getCustomerSegments: (customerId: string) => CustomerSegment[];
+  getCampaignsForCustomer: (customerId: string) => Campaign[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -27,6 +31,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
   const [rewards] = useState<Reward[]>(mockRewards);
   const [products] = useState<Product[]>(mockProducts);
+  const [segments] = useState<CustomerSegment[]>(mockSegments);
+  const [campaigns] = useState<Campaign[]>(mockCampaigns);
   const [viewMode, setViewMode] = useState<ViewMode>('customer');
 
   const addCustomer = (customer: Customer) => {
@@ -92,6 +98,84 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Evaluate if a customer belongs to a segment
+  const getCustomerSegments = (customerId: string): CustomerSegment[] => {
+    const customer = customers.find((c) => c.id === customerId);
+    if (!customer) return [];
+
+    const customerTransactions = transactions.filter((t) => t.customerId === customerId && t.type === 'earn');
+    const totalPurchases = customerTransactions.length;
+
+    // Calculate average order value
+    const totalSpent = customerTransactions.reduce((sum, t) => sum + t.points / 10, 0); // points / pointsPerDollar
+    const avgOrder = totalPurchases > 0 ? totalSpent / totalPurchases : 0;
+
+    // Get purchased categories
+    const purchasedCategories = new Set<string>();
+    customerTransactions.forEach((t) => {
+      t.productIds?.forEach((pid) => {
+        const product = products.find((p) => p.id === pid);
+        if (product) purchasedCategories.add(product.category);
+      });
+    });
+
+    // Calculate days since joining
+    const joinDate = new Date(customer.joinedDate);
+    const today = new Date();
+    const daysSinceJoining = Math.floor((today.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    return segments.filter((segment) => {
+      if (!segment.active) return false;
+
+      return segment.criteria.every((criterion) => {
+        switch (criterion.type) {
+          case 'points':
+            if (criterion.operator === 'greater_than') return customer.points > Number(criterion.value);
+            if (criterion.operator === 'less_than') return customer.points < Number(criterion.value);
+            if (criterion.operator === 'equals') return customer.points === Number(criterion.value);
+            return false;
+
+          case 'purchases':
+            if (criterion.operator === 'greater_than') return totalPurchases > Number(criterion.value);
+            if (criterion.operator === 'less_than') return totalPurchases < Number(criterion.value);
+            if (criterion.operator === 'equals') return totalPurchases === Number(criterion.value);
+            return false;
+
+          case 'category':
+            if (criterion.operator === 'contains') {
+              return purchasedCategories.has(String(criterion.value));
+            }
+            return false;
+
+          case 'join_date':
+            if (criterion.operator === 'less_than') return daysSinceJoining < Number(criterion.value);
+            if (criterion.operator === 'greater_than') return daysSinceJoining > Number(criterion.value);
+            return false;
+
+          case 'avg_order':
+            if (criterion.operator === 'greater_than') return avgOrder > Number(criterion.value);
+            if (criterion.operator === 'less_than') return avgOrder < Number(criterion.value);
+            return false;
+
+          default:
+            return false;
+        }
+      });
+    });
+  };
+
+  // Get active campaigns for a customer based on their segments
+  const getCampaignsForCustomer = (customerId: string): Campaign[] => {
+    const customerSegments = getCustomerSegments(customerId);
+    const customerSegmentIds = new Set(customerSegments.map((s) => s.id));
+
+    return campaigns.filter(
+      (campaign) =>
+        campaign.status === 'active' &&
+        customerSegmentIds.has(campaign.segmentId)
+    );
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -103,10 +187,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addTransaction,
         rewards,
         products,
+        segments,
+        campaigns,
         viewMode,
         setViewMode,
         awardPoints,
         redeemReward,
+        getCustomerSegments,
+        getCampaignsForCustomer,
       }}
     >
       {children}
